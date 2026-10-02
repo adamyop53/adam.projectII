@@ -1,0 +1,305 @@
+/* =========================================================================
+   calculator.css - the styling of the React calculator.
+   Layout is done with CSS Grid (the keypad) and Flexbox (the page).
+   ========================================================================= */
+
+/* Colour palette, so the whole look can be changed from one place. */
+:root {
+    --page-bg: #0d1020;
+    --glow: #263060;
+    --text: #f4f6ff;
+    --text-dim: #9aa3c7;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --key-bg: rgba(255, 255, 255, 0.07);
+    --key-border: rgba(255, 255, 255, 0.10);
+    --operator: #ffc65c;
+    --accent: #33c07b;
+    --danger: #ff7b7b;
+    --radius: 14px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 28px 18px;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 15% 10%, var(--glow), var(--page-bg) 62%);
+}
+
+/* ------------------------------ page headings --------------------------- */
+
+.page-title {
+    margin: 0;
+    text-align: center;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 0.04em;
+}
+
+.page-title span {
+    color: var(--operator);
+}
+
+.page-subtitle {
+    margin: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+/* --------------------------- calculator + history ----------------------- */
+
+/* Two columns when there is room, one column on small screens. */
+.layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) 230px;
+    gap: 18px;
+    align-items: start;
+    width: 100%;
+    max-width: 640px;
+    justify-content: center;
+}
+
+.calculator {
+    padding: 20px;
+    border-radius: 22px;
+    border: 1px solid var(--card-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.03));
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+}
+
+/* ------------------------------ the display ----------------------------- */
+
+.display {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(6, 8, 18, 0.65);
+    text-align: right;
+    overflow: hidden;
+}
+
+.display__expression {
+    min-height: 1.3em;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+}
+
+.display__value {
+    font-size: clamp(1.9rem, 7vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.15;
+    word-break: break-all;
+    font-variant-numeric: tabular-nums;
+}
+
+.display--error .display__value {
+    color: var(--danger);
+}
+
+/* ------------------------------- the keypad ----------------------------- */
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.key {
+    font: inherit;
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding: 14px 0;
+    color: var(--text);
+    background: var(--key-bg);
+    border: 1px solid var(--key-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: transform 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.key:hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.key:active {
+    transform: translateY(1px) scale(0.97);
+}
+
+.key:focus-visible {
+    outline: 2px solid var(--operator);
+    outline-offset: 2px;
+}
+
+/* AC, backspace, %, +/- */
+.key--function {
+    font-size: 1rem;
+    color: #c9d2ff;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+/* divide, multiply, minus, plus */
+.key--operator {
+    color: #ffd489;
+    background: rgba(255, 198, 92, 0.16);
+    border-color: rgba(255, 198, 92, 0.35);
+}
+
+.key--operator:hover {
+    background: rgba(255, 198, 92, 0.26);
+}
+
+/* the equals key */
+.key--equals {
+    color: #06231a;
+    background: linear-gradient(180deg, #6ee7a8, var(--accent));
+    border-color: #2fae70;
+    box-shadow: 0 10px 20px rgba(51, 192, 123, 0.28);
+}
+
+.key--equals:hover {
+    background: linear-gradient(180deg, #84f0b9, #3ed089);
+}
+
+/* ------------------------- history panel -------------------------------- */
+
+.history {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.history__title {
+    margin: 0 0 10px;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.history__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.history__list li {
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: #c7cdf0;
+    background: rgba(6, 8, 18, 0.4);
+    word-break: break-all;
+}
+
+.history__empty {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.history__clear {
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px 0;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--key-border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+}
+
+.history__clear:hover:enabled {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.history__clear:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ------------------------ keyboard hint + boot error -------------------- */
+
+.keypad__hint {
+    margin: 14px 2px 0;
+    font-size: 0.75rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+}
+
+.keypad__hint kbd {
+    padding: 1px 6px;
+    font-family: Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--key-border);
+    border-radius: 5px;
+}
+
+.boot-error {
+    max-width: 420px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--danger);
+    background: rgba(255, 123, 123, 0.10);
+    border: 1px solid rgba(255, 123, 123, 0.35);
+}
+
+/* ------------------------------ small screens --------------------------- */
+
+@media (max-width: 720px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .history__list {
+        max-height: 160px;
+    }
+}
+
+@media (max-width: 360px) {
+    .calculator {
+        padding: 14px;
+    }
+
+    .key {
+        font-size: 1rem;
+        padding: 12px 0;
+    }
+}
+
+/* Respect people who prefer less movement. */
+@media (prefers-reduced-motion: reduce) {
+    .key,
+    .history__clear {
+        transition: none;
+    }
+}
+
+
