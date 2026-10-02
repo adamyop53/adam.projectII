@@ -1,0 +1,328 @@
+
+:root {
+    --ink: #191c22;          /* main text */
+    --ink-soft: #5d6470;     /* secondary text */
+    --ink-faint: #a5abb5;    /* "PROFILE PHOTO" label + skill brackets */
+    --line: #d3d8df;         /* thin borders */
+    --line-strong: #b6bcc6;  /* the dashed photo frame */
+    --paper: #ffffff;        /* the card itself */
+    --panel: #f8f9fb;        /* the "About me" box */
+    --backdrop: #ecedf1;     /* the space behind the card */
+    --shadow: rgba(17, 21, 28, 0.10);
+    --radius: 10px;
+}
+
+/* A dark version of the same palette, for people who prefer it. */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ink: #eef1f6;
+        --ink-soft: #a9b1bd;
+        --ink-faint: #6d7683;
+        --line: #333942;
+        --line-strong: #454c57;
+        --paper: #171a1f;
+        --panel: #1e2228;
+        --backdrop: #0f1216;
+        --shadow: rgba(0, 0, 0, 0.55);
+    }
+}
+
+/* -------------------------------- the page ------------------------------ */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 44px 16px 64px;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas,
+        "Liberation Mono", "Courier New", monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--backdrop);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* -------------------------------- the card ------------------------------ */
+
+.card {
+    width: 100%;
+    max-width: 430px;
+    padding: 34px 30px 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: 0 20px 45px var(--shadow);
+}
+
+/* ----------------------------- profile photo ---------------------------- */
+
+/* The dashed frame from the sketch. The label sits underneath the photo, so
+   it stays visible while the picture is loading, or if it cannot be reached. */
+.photo {
+    position: relative;
+    width: 176px;
+    min-height: 190px;                /* keeps the frame visible on old browsers */
+    aspect-ratio: 3 / 4;              /* passport photo proportions */
+    margin: 0 auto 22px;
+    overflow: hidden;
+    border: 2px dashed var(--line-strong);
+    border-radius: 8px;
+    background: var(--panel);
+}
+
+.photo-label,
+.photo-image {
+    position: absolute;
+    inset: 0;
+}
+
+.photo-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-align: center;
+    color: var(--ink-faint);
+}
+
+/* The passport photograph, cropped to fill the dashed frame. It is layered on
+   top of the label, so the label only remains visible while the picture is
+   missing. The alt text is painted in the same box, quietly, on the rare
+   occasion that the picture cannot be loaded. */
+.photo-image {
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    /* A spare copy on the web - the same shot, used only if the picture in
+       images/ ever goes missing, so the frame is never left empty. */
+    background-image: url("https://i.imgur.com/wlAyX2I.png");
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-size: 0.66rem;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--ink-faint);
+}
+
+/* -------------------------------- identity ------------------------------ */
+
+.identity {
+    text-align: center;
+}
+
+.name {
+    margin: 0;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+}
+
+.role {
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+}
+
+.school {
+    margin: 20px 0 0;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+}
+
+/* ------------------------- section titles and about --------------------- */
+
+.divider {
+    margin: 26px 0 24px;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
+.section-title {
+    margin: 0 0 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.block + .block {
+    margin-top: 26px;
+}
+
+.about-text {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 0.84rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+}
+
+/* -------------------------------- skills -------------------------------- */
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.84rem;
+}
+
+/* The sketch lists the skills in square brackets. */
+.skills li::before {
+    content: "[ ";
+    color: var(--ink-faint);
+}
+
+.skills li::after {
+    content: " ]";
+    color: var(--ink-faint);
+}
+
+/* ------------------------------- the buttons ---------------------------- */
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.button {
+    flex: 1 1 130px;
+    padding: 11px 16px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    background: transparent;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+    transform: translateY(-1px);
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--line-strong);
+    outline-offset: 2px;
+}
+
+/* GitHub is the main link, so it is filled in; Contact stays an outline. */
+.button-solid {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.button-solid:hover,
+.button-solid:focus-visible {
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 0 8px 18px var(--shadow);
+}
+
+
+.contact {
+    margin-top: 32px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+/* A small cue that the "Contact" button actually jumped down here. */
+#contact:target .section-title {
+    color: var(--ink);
+}
+
+.contact-list {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    gap: 6px 14px;
+    margin: 0;
+    font-size: 0.82rem;
+}
+
+.contact-list dt {
+    color: var(--ink-soft);
+}
+
+.contact-list dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.contact a {
+    color: var(--ink);
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+}
+
+.contact a:hover,
+.contact a:focus-visible {
+    color: var(--ink-soft);
+}
+
+
+
+@media (max-width: 420px) {
+    body {
+        padding: 26px 12px 44px;
+    }
+
+    .card {
+        padding: 26px 20px 22px;
+    }
+
+    .photo {
+        width: 148px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    /* Stacked, the flex basis of each button would act as a height and leave
+       them oddly tall, so let them size to their own padding instead. */
+    .button {
+        flex: 0 0 auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .button {
+        transition: none;
+    }
+
+    .button:hover,
+    .button:focus-visible {
+        transform: none;
+    }
+}
